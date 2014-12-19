@@ -1,10 +1,13 @@
 // =====================================================================
-// SuperCollider Workspace
+// escombro FX!
 // =====================================================================
 
 s.boot
 
 ().play
+
+b = (buss: Bus.audio(s, 2));
+
 
 (
 SynthDef(\in, {
@@ -94,10 +97,40 @@ Ndef(\bbdDelay, {|dlyTm=62.5,fdbck=0.5,smplRt=15000,mix=0.5|
     
     XFade2.ar(input, signal, mix);
 }).play;
-)
+
 
 Ndef(\bbdDelay).set(\dlyTm,100);
 Ndef(\bbdDelay).set(\fdbck,1/2);
 Ndef(\bbdDelay).set(\smpltRt,200);
 Ndef(\bbdDelay).set(\smpltRt,6000);
 Ndef(\bbdDelay).set(\smpltRt,12220);
+
+)
+
+
+(
+c = CCResponder({ |src,chan,num,value|
+[src,chan,num,value].postln;
+
+switch(num,
+0, {
+	Ndef(\bbdDelay).set(\dlyTm,value);
+},
+1, {
+	Ndef(\bbdDelay).set(\fdbck,value/127);
+},
+2, {
+	(2).postln;
+});
+
+
+},
+nil, // any source
+nil, // any channel
+nil, // any CC number
+nil // any value
+)
+)
+
+
+c.remove;
