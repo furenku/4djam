@@ -1,15 +1,16 @@
 KeyboardManager keyboard;
+NoteSource nS;
 
 void setup(){
-  keyboard = new KeyboardManager();  
+	keyboard = new KeyboardManager();  
 
-
-  test();
+	setupMIDI();
+	test();
 
 }
 
 void draw() {
-  
+	
 }
 
 

@@ -1,6 +1,9 @@
 void test() {
 	EventSource src = new EventSource( 101 );
 	EventTarget trgt = new EventTarget( 201 );
+	EventTarget trgt2 = new EventTarget( 202 );
+
+	nS = new NoteSource( 102 );
 
 	EventController ctl = new EventController( 1 );
 
