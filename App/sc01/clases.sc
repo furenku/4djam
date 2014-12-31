@@ -1,16 +1,33 @@
+"TRADUCIR A PROCESSING!!!".postln;
 
-EventSource {
+EventNode {
+	int id;
+
+	EventNode( int id_ ) {
+	}
+	init { arg id_;
+		id = id_;
+	}
+	setID { arg id_;
+		id = id_;
+	}
+	getID {
+		^id;
+	}
+
+}
+
+
+class EventSource extends EventNode  {
 
 	classvar e;
 	classvar source;
-	classvar <>id;
+
 	classvar <>target;
 	//
 
 
-	*init {
-		"init EventSource class".postln;
-	}
+
 
 	*send { arg event_;
 		var message = [ id, event_ ];
@@ -19,10 +36,7 @@ EventSource {
 
 	}
 
-	*new { arg id_;
-		id = id_;
-		this.init();
-	}
+
 
 }
 
@@ -42,8 +56,11 @@ NoteSource : EventSource {
 	}
 }
 
-EventTarget {
-	*trigger {
+EventTarget : EventNode {
+
+	*trigger { arg event;
+		("Trigger ID: " + this.id + ", triggers event:").postln;
+		event.postln;
 	}
 }
 
@@ -64,32 +81,28 @@ EventTarget {
 
 /* MANAGER */
 
-Manager {
-	classvar actions;
+Controller {
+	classvar targets;
 	*new {
-		actions = Dictionary.new();
+		targets = Dictionary.new();
+	}
+	*bind {
+		arg source_, target_;
+		source_.target = this;
+		targets.add( source_.id.asSymbol -> target_ );
 	}
 }
 
-EventManager : Manager {
+EventController : Controller {
 
-	*bind {
-		arg source_, target_;
 
-		source_.target = this;
-		actions.add( source_.id.asSymbol ->
-			{ arg event;
-				("sent event: "+event).postln;
-			}
-		);
-	}
 
 	*trigger { arg message;
 		var id = message[0].asSymbol;
 		var event = message[1];
 
-		actions[ id ].value( event );
-
+		("trigger: " + targets[ id ].id ).postln;
+		targets[ id ].trigger( event );
 	}
 }
 
@@ -101,7 +114,7 @@ Jam4D {
 	classvar events;
 
 	*new {
-		events = EventManager.new();
+		events = EventController.new();
 	}
 
 }
