@@ -4,6 +4,10 @@
 ~em = EventManager.new();
 ~em.bind( ~es, "trget" );
 ~a = 1;
-~es.send(~a );
+
+~n = NoteSource.new( 1118 );
+~em.bind( ~n, "trget" );
+
+~es.send( [118,~a] );
 
 )

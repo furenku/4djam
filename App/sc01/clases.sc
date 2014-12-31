@@ -16,7 +16,7 @@ EventSource {
 		var message = [ id, event_ ];
 
 		target.trigger( message );
-		message.postln;
+
 	}
 
 	*new { arg id_;
@@ -82,14 +82,12 @@ EventManager : Manager {
 				("sent event: "+event).postln;
 			}
 		);
-
-		actions.postln;
 	}
 
 	*trigger { arg message;
 		var id = message[0].asSymbol;
 		var event = message[1];
-		("action: " +  actions[ id ] ).postln();
+
 		actions[ id ].value( event );
 
 	}
