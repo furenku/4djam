@@ -1,6 +1,6 @@
 
-class SynthPlayer extends EventTarget {
-	SynthPlayer( int id_ ) {
+class MonoSynth extends EventTarget {
+	MonoSynth( int id_ ) {
 		super( id_ );
 		synth = new Synth("tst");
 	}
@@ -9,17 +9,12 @@ class SynthPlayer extends EventTarget {
 	boolean synthOn = false;
 
 	void createSynth() {
-		// if( ! synthOn ) {
     	synth.create();   
 	    synth.set("gate", 0 );
-	    	// synthOn = true;
-    	// }
 	}
 
 	void freeSynth() {		
 	    synth.set("gate", 0 );
-		// synth.free();    
-		// synthOn = false;
 	}
     
     void trigger( Event event_ ) {
@@ -29,7 +24,6 @@ class SynthPlayer extends EventTarget {
     	
     	if( event_.parameters.parameters.get("name").value == "note_on" ) {
     		if( ! synthOn ) {    			
-	    		// createSynth();
 			    synth.set("gate", 1 );
 			    synth.set("amp", amp );
 			    synth.set("freq", freq );
@@ -38,11 +32,6 @@ class SynthPlayer extends EventTarget {
     		freeSynth();
     	}
 
-    	// super.trigger( event_ );
-
 	}
-    
-    // create synth
-
-
+   
 }

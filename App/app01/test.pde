@@ -1,6 +1,6 @@
 EventController ctl = new EventController( 1 );
 
-SynthPlayer synthPlayer = new SynthPlayer( ctl.nextID() );
+MonoSynth synthPlayer = new MonoSynth( ctl.nextID() );
 
 
 void test() {
