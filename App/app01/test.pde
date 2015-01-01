@@ -1,13 +1,15 @@
-
-
-
 EventController ctl = new EventController( 1 );
+
+SynthPlayer synthPlayer = new SynthPlayer( ctl.nextID() );
+
 
 void test() {
 
+	synthPlayer.createSynth();
 
 	EventSource eventSource = new EventSource( ctl.nextID() );
 	EventTarget eventTarget = new EventTarget( ctl.nextID() );
+
 	
 	ctl.bind( eventSource, eventTarget );
 
@@ -15,7 +17,7 @@ void test() {
 	EventTarget ccTarget = new EventTarget( ctl.nextID() );
 
 
-	ctl.bind( noteSource, noteTarget );
+	ctl.bind( noteSource, synthPlayer );
 	ctl.bind( ccSource, ccTarget );
 
 
@@ -31,4 +33,11 @@ void test() {
 
 	ctl.dumpRoutings();
 
+}
+
+
+void exit()
+{
+    synthPlayer.freeSynth();
+    super.exit();
 }
