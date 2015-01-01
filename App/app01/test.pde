@@ -12,11 +12,11 @@ void test() {
 	ctl.bind( eventSource, eventTarget );
 
 	EventTarget noteTarget = new EventTarget( ctl.nextID() );
+	EventTarget ccTarget = new EventTarget( ctl.nextID() );
 
-
-	println( eventSource.id + ", " + eventTarget.id  + ", " +  noteSource.id + ", " +  noteTarget.id );
 
 	ctl.bind( noteSource, noteTarget );
+	ctl.bind( ccSource, ccTarget );
 
 
 

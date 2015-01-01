@@ -63,10 +63,11 @@ class EventSource extends BaseClass  {
   
   EventSource( int id_ ) {
     super( id_ );
-    println( "ID: " + id_ );
+    parameters = new Parameters();
   }
   
   EventController controller;
+  Parameters parameters;
 
   Event createEvent( Parameters parameters_ ) {
     
