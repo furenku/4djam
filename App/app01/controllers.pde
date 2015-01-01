@@ -1,34 +1,44 @@
 
 /* MANAGER */
 
-class Controller extends EventTarget {
-	HashMap<String,EventTarget> targets;
-	Controller( int id_ ) {
+class EventController extends EventTarget {
+	
+	HashMap< Integer, EventSource > sources;
+	HashMap< Integer, EventTarget > targets;
+	HashMap< Integer, EventRouting > routings;
+
+	EventController( int id_ ) {
 		super( id_ );
-		targets = new HashMap<String,EventTarget>();
+		targets = new HashMap< Integer, EventTarget>();
 	}
 	
 	void bind( EventSource source_, EventTarget target_ ) {
-		source_.target = this;
-		targets.put( str( source_.id ), target_ );
-	}
-}
+		source_.controller = this;
 
+		println( "bind " + source_.id + "to: " + target_.id );
 
+		targets.put( source_.id, target_ );
 
-class EventController extends Controller {
+		for (int key_ : targets.keySet()) {
+		    println( "key " + key_ );
+		}
 
-	EventController( int id_ ) {
-		super( id_ );	
+		for ( EventTarget target__ : targets.values()) {
+		    println( "target " + target__.id );
+		}
 	}
 
 	void trigger( EventMessage message_ ) { 
 		int id = message_.id;
+		EventTarget target = targets.get( id );
+
 		String[] event = message_.event;
-		EventTarget target = targets.get( str( id ) );
+
 		println("trigger: " + target.id );
 		target.trigger( message_ );
+
 	}
+
 }
 
 

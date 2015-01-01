@@ -3,6 +3,7 @@
 import themidibus.*; //Import the library
 
 
+NoteSource noteSource;
 
 class NoteSource extends EventSource {
 	NoteSource( int id_ ) {
@@ -15,11 +16,14 @@ class NoteSource extends EventSource {
 
 
 
-MidiBus myBus; // The MidiBus
-NoteSource noteSource;
+MidiBus myBus;
+
+
 void setupMIDI() {
 	
 	myBus = new MidiBus( this, 0, 1 );
+
+  noteSource = new NoteSource( 101 );
 
 }
 
@@ -28,18 +32,12 @@ void setupMIDI() {
 
 void noteOn(int channel, int pitch, int velocity) {
   String[] evt = { "Note On:", "Channel:"+channel, "Pitch:"+pitch, "Velocity:"+velocity  }; 
-  NoteSource nSrc = new NoteSource( 103 );
-  EventTarget trgt = new EventTarget( 204 );
-  nSrc.target = trgt;
-  nSrc.send( evt );
+  noteSource.send( evt );
 }
 
 void noteOff(int channel, int pitch, int velocity) {
   String[] evt = { "Note Off:", "Channel:"+channel, "Pitch:"+pitch, "Velocity:"+velocity  }; 
-  NoteSource nSrc = new NoteSource( 103 );
-  EventTarget trgt = new EventTarget( 204 );
-  nSrc.target = trgt;
-  nSrc.send( evt );
+  noteSource.send( evt );
 }
 
 void controllerChange(int channel, int number, int value) {
