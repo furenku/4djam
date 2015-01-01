@@ -1,17 +1,17 @@
 
 
 
+EventController ctl = new EventController( 1 );
 
 void test() {
 
-	EventController ctl = new EventController( 1 );
 
-	EventSource eventSource = new EventSource( 102 );
-	EventTarget eventTarget = new EventTarget( 201 );
+	EventSource eventSource = new EventSource( ctl.nextID() );
+	EventTarget eventTarget = new EventTarget( ctl.nextID() );
 	
 	ctl.bind( eventSource, eventTarget );
 
-	EventTarget noteTarget = new EventTarget( 202 );
+	EventTarget noteTarget = new EventTarget( ctl.nextID() );
 
 
 	println( eventSource.id + ", " + eventTarget.id  + ", " +  noteSource.id + ", " +  noteTarget.id );
@@ -19,8 +19,16 @@ void test() {
 	ctl.bind( noteSource, noteTarget );
 
 
-	String [] evt = { "uno", "dos" };
-	eventSource.send( evt );
 
+	Parameters parameters = new Parameters();
+
+	Parameter parameter = new Parameter("testkey","testval");
+
+	parameters.addParameter( parameter );
+	
+	eventSource.trigger( parameters );
+
+
+	ctl.dumpRoutings();
 
 }
