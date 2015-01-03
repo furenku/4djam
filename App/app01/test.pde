@@ -1,11 +1,11 @@
 EventController ctl = new EventController( 1 );
 
-MonoSynth synthPlayer = new MonoSynth( ctl.nextID() );
+// MonoSynth synthPlayer = new MonoSynth( ctl.nextID() );
 
 
 void test() {
 
-	synthPlayer.createSynth();
+	//synthPlayer.createSynth();
 
 	EventSource eventSource = new EventSource( ctl.nextID() );
 	EventTarget eventTarget = new EventTarget( ctl.nextID() );
@@ -17,8 +17,8 @@ void test() {
 	EventTarget ccTarget = new EventTarget( ctl.nextID() );
 
 
-	ctl.bind( noteSource, synthPlayer );
-	ctl.bind( ccSource, ccTarget );
+	// ctl.bind( noteSource, synthPlayer );
+	// ctl.bind( ccSource, ccTarget );
 
 
 
@@ -33,11 +33,22 @@ void test() {
 
 	ctl.dumpRoutings();
 
+
+	testAudioToOsc();
+
 }
 
 
+void testAudioToOsc() {
+
+	AudioController aC = new AudioController();
+	OscController oC = new OscController();
+	aC.oscController = oC;
+	aC.createNode( "synth", "default");
+}
+
 void exit()
 {
-    synthPlayer.freeSynth();
+    // synthPlayer.freeSynth();
     super.exit();
 }
