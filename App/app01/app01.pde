@@ -46,17 +46,6 @@ void draw() {
 
 
 
-
-void mousePressed() {
-	println("m P!!!!");
-	//slow things down a bit
-	// if (counter%5 == 0) {
-		//map mouseY to fit frequency range
-		
-	// }
-}
-
-
 void initOsc() {
 	
 }

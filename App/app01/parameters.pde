@@ -1,5 +1,5 @@
 
-class Parameter {
+class Parameter extends BaseClass {
   Parameter() {
     name = "undefined";
     type = "undefined";
@@ -18,16 +18,9 @@ class Parameter {
     setValue( str( value_ ) );
   }
 
-  String type;
-  String name;
   String value;
 
-  void setName( String name_ ){    
-    name = name_;
-  }
-  void setType( String type_ ){    
-    type = type_;
-  }
+
   void setValue( String value_ ) {
     value = value_;
   }
@@ -48,6 +41,18 @@ class Parameters {
 
   void addParameter( Parameter parameter_ ) {
     parameters.put( parameter_.name, parameter_ );
+  }
+
+  
+  ArrayList<String> getParameterArray() {
+    ArrayList<String> parameterArray = new ArrayList<String>();
+
+    for( Parameter p : parameters.values() ) {
+      parameterArray.add( p.name );
+      parameterArray.add( p.value );
+    }
+
+    return parameterArray;
   }
 
 }

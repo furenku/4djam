@@ -23,4 +23,36 @@ class OscController {
 		oscP5.send( oscMsg_ );
 	}
 
+
+
+	void createNode( int id_, String type_, String name_ ) {
+		if( type_ == "synth" ) {
+			OscMessage oscMsg = createMessage( "/createSynth" );
+			oscMsg.add( id_ );
+			oscMsg.add( type_ );
+			oscMsg.add( name_ );
+			send( oscMsg );
+		}
+		if( type_ == "audioBus" || type_ == "controlBus" ) {
+			int numChannels = 1;
+			OscMessage oscMsg = createMessage( "/createBus" );
+			oscMsg.add( id_ );
+			oscMsg.add( type_ );
+			oscMsg.add( name_ );
+			oscMsg.add( numChannels );
+			send( oscMsg );
+		}
+	}
+
+
+	void route( String type_, int node1_, int node2_ ) {
+		OscMessage oscMsg = createMessage( "/"+type_+"NodeTo" );
+		oscMsg.add( node2_ );
+		oscMsg.add( node2_ );
+		send( oscMsg );
+	}
+
+
+
+
 }

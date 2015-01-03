@@ -7,13 +7,13 @@ MidiBus midiBus;
 NoteSource noteSource;
 CCSource ccSource;
 
-class NoteSource extends EventSource {
+class NoteSource extends Node {
 	NoteSource( int id_ ) {
 		super( id_ );
 	}
 
 
-  void trigger( int onOff_, int channel_, int pitch_, int velocity_ ) {
+  void send( int onOff_, int channel_, int pitch_, int velocity_ ) {
 
     String onOff;
     if( onOff_ == 1 )
@@ -26,31 +26,28 @@ class NoteSource extends EventSource {
     parameters.addParameter( new Parameter("pitch", pitch_ ) );
     parameters.addParameter( new Parameter("velocity", velocity_ ) );
 
-    super.trigger( parameters );
+    super.send( parameters );
 
   }
 
 
 }
 
-
-
-class CCSource extends EventSource {
+class CCSource extends Node {
   CCSource( int id_ ) {
     super( id_ );
   }
   
-  void trigger( int channel_, int number_, int value_ ) {
+  void send( int channel_, int number_, int value_ ) {
 
     parameters.addParameter( new Parameter("channel", channel_ ) );
     parameters.addParameter( new Parameter("number", number_ ) );  
     parameters.addParameter( new Parameter("value", value_ ) );
 
-    super.trigger( parameters );
+    super.send( parameters );
 
   }
 }
-
 
 
 void setupMIDI() {
@@ -64,17 +61,15 @@ void setupMIDI() {
 }
 
 
-
-
 void noteOn(int channel, int pitch, int velocity) {
-  noteSource.trigger(1, channel, pitch, velocity );
+  noteSource.send(1, channel, pitch, velocity );
 }
 
 void noteOff(int channel, int pitch, int velocity) {
-  noteSource.trigger(0, channel, pitch, velocity ); 
+  noteSource.send(0, channel, pitch, velocity ); 
 }
 
 void controllerChange(int channel, int number, int value) {
-  ccSource.trigger( channel, number, value );   
+  ccSource.send( channel, number, value );   
 }
 
