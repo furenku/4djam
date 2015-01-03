@@ -14,8 +14,8 @@ class OscController {
 	String oscP5event;
 
 
-	OscMessage createMessage(){
-		OscMessage oscMsg = oscP5.newMsg("/createNode");
+	OscMessage createMessage( String address_ ){
+		OscMessage oscMsg = oscP5.newMsg( address_ );
 		return oscMsg;
 	}
 

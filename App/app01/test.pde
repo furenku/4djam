@@ -40,11 +40,20 @@ void test() {
 
 
 void testAudioToOsc() {
-
 	AudioController aC = new AudioController();
 	OscController oC = new OscController();
 	aC.oscController = oC;
-	aC.createNode( "synth", "default");
+
+	AudioNode bus = aC.createBus();
+	AudioNode out = aC.createAudioNode( "synth", "output");
+	AudioNode gen = aC.createAudioNode( "synth", "testGen");
+
+	println( "created bus: " + bus.id );
+	println( "created gen node: " + gen.id );
+	println( "created out node: " + out.id );
+	aC.audioRoute("/nodeOut", bus.id, gen.id );
+	aC.audioRoute("/nodeIn", bus.id, out.id );
+
 }
 
 void exit()
