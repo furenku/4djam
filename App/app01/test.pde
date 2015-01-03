@@ -1,5 +1,5 @@
 NodeController ctl = new NodeController( 1 );
-OscController osc = new OscController();
+OscSender osc = new OscSender();
 
 void test() {
 
@@ -9,7 +9,7 @@ void test() {
 	Node eventTarget = new Node( ctl.nextID() );
 
 	
-	ctl.bind( "control", eventSource, eventTarget );
+	ctl.bind( eventSource, eventTarget );
 
 	Node noteTarget = new Node( ctl.nextID() );
 	Node ccTarget = new Node( ctl.nextID() );
@@ -38,40 +38,29 @@ void test() {
 	ctl.dumpRoutings();
 
 
-	// testAudioToOsc();
-	testNodes();
+	testAudioNodes();
 }
 
 
-void testNodes() {
+void testAudioNodes() {
 
-	NodeController busses = new NodeController(1);
-	NodeController synths = new NodeController(2);
-	NodeController control = new NodeController(3);
-}
+	AudioController audio = new AudioController(0);
+
+
+	audio.setSender( osc );
+	Node bus = audio.busses.createNode( "audioBus", "bus_1" );
+	Node synth = audio.synths.createNode( "audioBus", "bus_1" );
+	Node control = audio.controls.createNode( "audioBus", "bus_1" );
+	
+	println( "created bus : " + bus.id );
+	println( "created synth : " + synth.id );
+	println( "created control : " + control.id );
 /*
-AudioController aC;
-OscController oC;
-
-void testAudioToOsc() {
-
-	aC = new AudioController();
-	oC = new OscController();
-
-	aC.oscController = oC;
-	AudioNode bus = aC.createBus();
-	AudioNode out = aC.createAudioNode( "synth", "output");
-	AudioNode gen = aC.createAudioNode( "synth", "testGen");
-
-	println( "created bus: " + bus.id );
-	println( "created gen node: " + gen.id );
-	println( "created out node: " + out.id );
-
-	aC.route("/nodeOut", bus.id, gen.id );
-	aC.route("/nodeIn", bus.id, out.id );
-
-}
+	audio.route("/nodeOut", bus.id, gen.id );
+	audio.route("/nodeIn", bus.id, out.id );
 */
+}
+
 
 
 void mousePressed() {

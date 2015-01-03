@@ -23,13 +23,10 @@ o = Array(~num_o);
 
 // funciones:
 
-~newAudioNode = {
-	| index, name |
-
-	~audioNodes[index] = Synth( name );
-};
+~newAudioNode = {| index, name | ~audioNodes[index] = Synth( name ); };
 
 
+~newControlNode = {};
 
 ~newBus = {
 	| type, index, numChannels |
@@ -66,11 +63,18 @@ o = Array(~num_o);
 
 // responders:
 
+/*
+o.add( OSCresponder(nil, '/createOscNode', {arg time, responder, msg, addr;
+	var index = msg[1];
+	var type = msg[2];
+	var name = msg[3];
+}).add );
+*/
 o.add( OSCresponder(nil, '/createSynth', {arg time, responder, msg, addr;
 	var index = msg[1];
 	var type = msg[2];
 	var name = msg[3];
-	~newSynth.value( index, name );
+	~newAudioNode.value( index, name );
 }).add );
 o.add( OSCresponder(nil, '/createBus', {arg time, responder, msg, addr;
 	var index = msg[1];
@@ -78,6 +82,7 @@ o.add( OSCresponder(nil, '/createBus', {arg time, responder, msg, addr;
 	var numChannels = msg[3];
 	~newBus.value( type, index, numChannels );
 }).add );
+
 o.add( OSCresponder(nil, '/audioNodeTo', {arg time, responder, msg, addr;
 	var bus = msg[1];
 	var node = msg[2];

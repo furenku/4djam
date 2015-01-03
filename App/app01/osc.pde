@@ -1,5 +1,5 @@
-class OscController {
-	OscController() {
+class OscSender {
+	OscSender() {
 		receiveAtPort = 12000;
 		sendToPort = 57120;
 		host = "127.0.0.1";
@@ -25,28 +25,32 @@ class OscController {
 
 
 
-	void createNode( int id_, String type_, String name_ ) {
-		if( type_ == "synth" ) {
-			OscMessage oscMsg = createMessage( "/createSynth" );
-			oscMsg.add( id_ );
-			oscMsg.add( type_ );
-			oscMsg.add( name_ );
-			send( oscMsg );
-		}
-		if( type_ == "audioBus" || type_ == "controlBus" ) {
-			int numChannels = 1;
-			OscMessage oscMsg = createMessage( "/createBus" );
-			oscMsg.add( id_ );
-			oscMsg.add( type_ );
-			oscMsg.add( name_ );
-			oscMsg.add( numChannels );
-			send( oscMsg );
-		}
+	void createNode( String address_, int id_, String type_ ) {
+		OscMessage oscMsg = createMessage( "/" + address_ );
+		oscMsg.add( id_ );
+		oscMsg.add( type_ );
+		send( oscMsg );
+	}
+	void createNode( String address_, int id_, String type_, String name_ ) {
+		OscMessage oscMsg = createMessage( "/" + address_ );
+		oscMsg.add( id_ );
+		oscMsg.add( type_ );
+		oscMsg.add( name_ );
+		send( oscMsg );
+	}
+	void createNode( String address_, int id_, String type_, String name_, String [] parameters_ ) {
+		OscMessage oscMsg = createMessage( "/" + address_ );
+		oscMsg.add( id_ );
+		oscMsg.add( type_ );
+		oscMsg.add( name_ );
+		oscMsg.add( parameters_ );
+		send( oscMsg );
+	
 	}
 
 
-	void route( String type_, int node1_, int node2_ ) {
-		OscMessage oscMsg = createMessage( "/"+type_+"NodeTo" );
+	void route( String route_, int node1_, int node2_ ) {
+		OscMessage oscMsg = createMessage( "/"+route_+"NodeTo" );
 		oscMsg.add( node2_ );
 		oscMsg.add( node2_ );
 		send( oscMsg );

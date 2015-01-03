@@ -13,7 +13,11 @@ class NodeController extends Node {
 		super( id_ );
 		
 		lastID = id_;
+
+		nodes = new HashMap< Integer, Node>();
 		routings = new HashMap< Integer, Routing>();
+
+		setType("nodeController");
 	}
 	
 
@@ -23,7 +27,7 @@ class NodeController extends Node {
 	}
 
 
-	void bind( String type_, Node source_, Node target_ ) {
+	void bind( Node source_, Node target_ ) {
 
 		source_.controller = this;
 
@@ -36,8 +40,6 @@ class NodeController extends Node {
 		routing.setTarget( target_ );
 
 		routings.put( source_.id, routing );
-
-		//oscController.route( type_, source_.id, target_.id );
 
 	}
 
@@ -71,29 +73,103 @@ class NodeController extends Node {
 		Node node = new Node( newID, type_, name_ );
 		nodes.put( newID, node );
 		
-		//oscController.createNode( newID, type_, name_ );
-
 		return node;
 
 	}
 	
-	void removeNode( int ID_ ) {
-		nodes.remove( ID_ );		
+	void removeNode( int id_ ) {
+		nodes.remove( id_ );		
 	}
 	
+}
 
 
-	
 
 
-	
 
-	
+ class OscController extends NodeController {
 
-	
+	OscController( int id_ ) {
+		super( id_ );
+		setType("osc");
+	}
+
+	OscSender oscSender;
+
+	void setSender( OscSender oscSender_ ) {
+		oscSender = oscSender_;
+	}
+	void bind( Node source_, Node target_ ) {
+		super.bind( source_, target_ );
+		oscSender.route( type, source_.id, target_.id );
+	}
 
 
 
 }
 
 
+
+
+
+class ControlController extends NodeController {
+	ControlController( int id_ ) {
+		super( id_ );
+		setType("control");
+	}
+}
+
+
+class BusController extends OscController {
+	BusController( int id_ ) {
+		super( id_ );
+		setType("bus");
+	}
+	
+	Node createNode( String type_, String name_ ) {	
+		Node node = super.createNode( type_, name_ );
+		oscSender.createNode( "createBus", node.id, type_, name_ );
+		return node;
+	}
+	
+}
+
+
+
+class SynthController extends OscController {
+	SynthController( int id_ ) {
+		super( id_ );
+		setType("synth");
+	}
+	
+	Node createNode( String type_, String name_ ) {	
+		Node node = super.createNode( type_, name_ );
+		oscSender.createNode( "createSynth", node.id, type_, name_ );
+		return node;
+	}
+}
+
+
+
+
+class AudioController extends OscController {
+	AudioController	( int id_ ) {
+		super( id_ );
+		setType("audio");
+		synths = new SynthController( id_ );
+		busses = new BusController( id_ );
+		controls = new ControlController( id_ );
+
+		synths.setSender( oscSender );
+	}
+
+	void setSender( OscSender oscSender_ ) {
+		super.setSender( oscSender_ );
+		synths.setSender( oscSender_ );
+		busses.setSender( oscSender_ );
+	}
+	
+	SynthController synths;
+	BusController busses;
+	ControlController controls;
+}
