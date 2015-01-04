@@ -48,3 +48,9 @@ SynthDef(\output,{ | inBus=98, outBus=99|
 	var in = In.ar( inBus, 1 );
 	Out.ar( outBus, in );
 }).store;
+
+
+SynthDef(\testNote,{ | outBus=99, freq = 0.5, rfreq = 300, t_trig = 0 |
+	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig), rfreq, 0.1 );
+	Out.ar( outBus, sig );
+}).store;

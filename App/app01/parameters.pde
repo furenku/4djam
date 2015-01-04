@@ -71,6 +71,19 @@ class Parameters extends BaseClass {
     return parameter;
   }
 
+  String get( String name_ ) {
+    return parameters.get( name_ ).value;
+  }
+  String get( String name_, String zero_ ) {
+    return parameters.get( name_ ).value;
+  }
+  int get( String name_, int zero_ ) {
+    return int( parameters.get( name_ ).value );
+  }
+  float get( String name_ , float zero_ ) {
+    return float( parameters.get( name_ ).value );
+  }
+
   
   String [] getParameterArray() {
     ArrayList<String> parameterList = new ArrayList<String>();

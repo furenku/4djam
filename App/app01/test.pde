@@ -29,6 +29,8 @@ void testAudioNodes() {
 
 	audio.connect( synth1, output1 );
 
+
+	audio.connect( noteSource, synth1 );
 	// Node control = audio.controls.createNode( "audioBus", "bus_1" );
 	
 

@@ -61,6 +61,19 @@ class SynthController extends OscController {
 		return node;
 	}
 
+	void trigger ( Event event_ ) {
+		int id = event_.sourceID;
+		Parameters p = event_.parameters;
+		String name = p.get("name");
+		if ( name == "note_on" || name == "note_off" ) {
+			int channel = p.get("channel", 0 );
+			int pitch = p.get("pitch", 0 );
+			int velocity = p.get("velocity", 0 );
+		    println("note_on");
+		    println( channel, pitch, velocity );
+		}
+
+	}
 
 	// parameters: 
 
@@ -126,10 +139,14 @@ class AudioController extends OscController {
 
 	Routing connect( Node source_, Node target_ ) {
 		Routing routing = super.connect( source_, target_ );
-		println( routing.type );
-		// if ( routing.type == "synth-output" ) {
+		if ( routing.type.equals( "synth-output" ) ) {
+			println( routing.type );
 			oscSender.connect( routing.source.id, routing.target.id );
-		// }
+		}
+		if ( routing.type.equals( "noteSource-synth" ) ) {
+			println( routing.type );
+			source_.setController( synths );
+		}
 		return routing;
 
 	}

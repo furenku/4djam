@@ -186,6 +186,8 @@ class NodeController extends Node {
 
     routings.put( source_.id, routing );
 
+    source_.setController( this );
+
     return routing;
 
   }

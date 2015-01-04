@@ -8,8 +8,10 @@ NoteSource noteSource;
 CCSource ccSource;
 
 class NoteSource extends Node {
+
 	NoteSource( int id_ ) {
 		super( id_ );
+    setType( "noteSource" );
 	}
 
 
