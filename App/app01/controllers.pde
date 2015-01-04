@@ -10,13 +10,7 @@ class OscController extends NodeController {
 	void setSender( OscSender oscSender_ ) {
 		oscSender = oscSender_;
 	}
-	void bind( Node source_, Node target_ ) {
-		super.bind( source_, target_ );
-		oscSender.route( type, source_.id, target_.id );
-	}
-
 	
-
 }
 
 
@@ -38,27 +32,20 @@ class BusController extends OscController {
 	}
 	
 	Node createBus() {			
-		Node node = createNode( type );
+		Node node = createNode();
 		oscSender.createNode( node.id, node.type, node.name );
 		return node;
 	}
 	
-}
-
-
-class OutputController extends OscController {
-	OutputController( int id_ ) {
-		super( id_ );
-		setType("output");
-	}
-	
-	Node createOutput( int channel_ ) {			
-		Node node = createNode( channel_, type );
-		oscSender.createNode( channel_, node.type, node.name );
+	Node createBus( int channel_ ) {			
+		Node node = createNode( channel_ );
+		String [] parameters = { "outBus", str( channel_) };
+		oscSender.createNode( node.id, "outBus", node.name, parameters );
 		return node;
 	}
-
 }
+
+
 
 
 
@@ -69,7 +56,7 @@ class SynthController extends OscController {
 	}
 	
 	Node createSynth( String name_ ) {			
-		Node node = createNode( type, name_ );
+		Node node = createNode( name_ );
 		oscSender.createNode( node.id, node.type, node.name );
 		return node;
 	}
@@ -82,6 +69,22 @@ class SynthController extends OscController {
 	}
 
 }
+
+
+class OutputController extends SynthController {
+	OutputController( int id_ ) {
+		super( id_ );
+		setType("output");
+	}
+	
+	Node createOutput( int channel_ ) {			
+		Node node = createNode( channel_ );
+		oscSender.createNode( channel_, node.type, node.name );
+		return node;
+	}
+
+}
+
 
 
 
@@ -105,8 +108,11 @@ class AudioController extends OscController {
 	// ControlController controls;
 
 
-	void createOutput( int channel_ ) {
-		outputs.createOutput( channel_);
+	Node createOutput( int channel_ ) {
+		busses.createBus( channel_ );
+		Node output = outputs.createOutput( channel_ );
+		output.set( "outBus", channel_ );
+		return output;
 	}
 
 	void setSender( OscSender oscSender_ ) {
@@ -116,7 +122,16 @@ class AudioController extends OscController {
 		busses.setSender( oscSender_ );
 	}
 
-
 	
+
+	Routing connect( Node source_, Node target_ ) {
+		Routing routing = super.connect( source_, target_ );
+		println( routing.type );
+		// if ( routing.type == "synth-output" ) {
+			oscSender.connect( routing.source.id, routing.target.id );
+		// }
+		return routing;
+
+	}
 
 }

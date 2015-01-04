@@ -42,28 +42,17 @@ o = Array(~num_o);
 };
 
 
-~synthTo = {|node1,node2|
-	( node1.asString() ++ " ---> " ++ node2.asString() ).postln;
-	~audioNodes[ node2 ].set(\inBus, ~audioBusses[ node1 ].index );
-	~audioRoutes.put( node1, node2 );
+~newOutBus = {
+	| index, channel |
+	~audioBusses[ index ] = channel;
+	( "new out bus: " ++ ~audioBusses[index] ++ " for channel: " ++ channel ).postln;
 };
 
 
+
 ~setSynth = {|index, type, key, value|
-
-	[ type, value ].postln;
-	if( type == 'Integer' ) {
-		"integer ".post;
-		value = value.asInt();
-	};
-	if( type == 'Float' ) {
-		"float ".post;
-		value = value.asFloat();
-	};
-
-	value.postln;
-
-
+	if( type == 'Integer' ) { value = value.asInt(); };
+	if( type == 'Float' ) {	value = value.asFloat(); };
 	~synths[ index ].set( key.asSymbol(), value );
 };
 
@@ -96,32 +85,41 @@ o.add( OSCresponder(nil, '/create_synth', {arg time, responder, msg, addr;
 	var name = msg[3];
 	~newSynth.( index, name );
 }).add );
+o.add( OSCresponder(nil, '/create_outBus', {arg time, responder, msg, addr;
+	var index = msg[1];
+	var type = msg[2];
+	var name = msg[3];
+	var key = msg[4];
+	var channel  = msg[5];
+	~newOutBus.( index, channel );
+}).add );
 o.add( OSCresponder(nil, '/create_bus', {arg time, responder, msg, addr;
 	var index = msg[1];
 	~newBus.( index );
 }).add );
 
-o.add( OSCresponder(nil, '/audioNodeTo', {arg time, responder, msg, addr;
-	var bus = msg[1];
-	var node = msg[2];
-	~audioNodeTo.value( bus, node );
-}).add );
-o.add( OSCresponder(nil, '/controlNodeTo', {arg time, responder, msg, addr;
-	var bus = msg[1];
-	var node = msg[2];
-	~controlNodeIn.value( bus, node );
-}).add );
 
 
+
+o.add( OSCresponder(nil, '/connect', {arg time, responder, msg, addr;
+	var synth = msg[1];
+	var bus = msg[2];
+	~setSynth.( synth, "Integer", "outBus", bus );
+}).add );
 
 o.add( OSCresponder(nil, '/set_node', {arg time, responder, msg, addr;
 	var index = msg[1];
 	var type = msg[2];
 	var key = msg[3];
 	var value = msg[4];
-	("SET NODE: " ++ index ++' \\'++ "key: " ++ key ++ " : " ++ value ).postln;
+	("SET NODE: " ++ index ++ "key: " ++ ' \\' ++ key ++ " : " ++ value ).postln;
 	~setSynth.( index, type, key, value );
 
+}).add );
+
+
+o.add( OSCresponder(nil, '/freeAll', {arg time, responder, msg, addr;
+	~synths.collect({|z| if(z!=nil) { z.free; }; });
 }).add );
 
 

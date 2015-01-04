@@ -3,42 +3,8 @@ OscSender osc = new OscSender();
 
 void test() {
 
-	// ctl.oscController = osc;
-
-	Node eventSource = new Node( ctl.nextID() );
-	Node eventTarget = new Node( ctl.nextID() );
-
-	
-	ctl.bind( eventSource, eventTarget );
-
-	Node noteTarget = new Node( ctl.nextID() );
-	Node ccTarget = new Node( ctl.nextID() );
-
-
-	// ctl.bind( noteSource, synthPlayer );
-	// ctl.bind( ccSource, ccTarget );
-
-
-
-	Parameters parameters = new Parameters(0);
-
-	Parameter parameter = new Parameter("testkey","testval");
-
-	parameters.set( parameter );
-	
-	String [] pa = parameters.getParameterArray();
-
-	for( String st : pa ) {
-		println("STRING: "+ st );
-	}
-
-	eventSource.send( parameters );
-
-
-	ctl.dumpRoutings();
-
-
 	testAudioNodes();
+
 }
 
 Node synth1, synth2;
@@ -52,8 +18,8 @@ void testAudioNodes() {
 	Node bus1 = audio.busses.createBus();
 	Node bus2 = audio.busses.createBus();
 	
-	audio.createOutput(0);
-	audio.createOutput(1);
+	Node output1 = audio.createOutput(0);
+	Node output2 = audio.createOutput(1);
 	
 	synth1 = audio.synths.createSynth("testGen");
 	synth2 = audio.synths.createSynth("testGen");
@@ -61,12 +27,14 @@ void testAudioNodes() {
 
 	synth1.set( "freq", 3 );
 
-	//Node control = audio.controls.createNode( "audioBus", "bus_1" );
+	audio.connect( synth1, output1 );
+
+	// Node control = audio.controls.createNode( "audioBus", "bus_1" );
 	
 
 	// synth.addParameter("testKey","testVal");
 
-	//println( "created control : " + control.id );
+	// println( "created control : " + control.id );
 
 
 /*
@@ -97,5 +65,6 @@ void testSendNoteOff() {
 void exit()
 {
     // synthPlayer.freeSynth();
+    osc.freeAll();
     super.exit();
 }

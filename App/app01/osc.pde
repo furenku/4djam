@@ -77,5 +77,19 @@ class OscSender {
 		oscMsg.add( parameters_.getParameterArray() );
 		send( oscMsg );	
 	}
+
+
+	void connect( int sourceID_, int targetID_ ) {
+		OscMessage oscMsg = createMessage( "/connect" );
+		oscMsg.add( sourceID_ );
+		oscMsg.add( targetID_ );
+		send( oscMsg );
+	}
+
+
+	void freeAll() {
+		OscMessage oscMsg = createMessage( "/freeAll" );
+		send( oscMsg );
+	}
 	
 }

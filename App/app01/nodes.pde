@@ -11,6 +11,8 @@ class Node extends Parameters  {
   
   void setController( NodeController controller_ ) {
     controller = controller_;
+
+    println( "set Controller type: " + controller_.type + " to node type " + type );
   }
 
   Event createEvent( Parameters parameters_ ) {  
@@ -113,32 +115,48 @@ class NodeController extends Node {
   }
 
 
-  void bind( Node source_, Node target_ ) {
 
-    source_.controller = this;
 
-    int id = nextID();
-    Routing routing = new Routing( id );
 
-    println( "bind " + source_.id + " to: " + target_.id );
 
-    routing.setSource( source_ );
-    routing.setTarget( target_ );
+  Node createNode() {
 
-    routings.put( source_.id, routing );
+    int newID = nextID();
+    String name = type + "_" + newID;
+    Node node = new Node( newID, type, name );
+    node.setController( this );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+  Node createNode( int id_ ) {
+
+    String name = type  + "_" + id_;
+    Node node = new Node( id_, type, name );
+    node.setController( this );
+    nodes.put( id_, node );
+    
+    return node;
+
+  }
+  Node createNode( String name_ ) {
+
+    int newID = nextID();
+    Node node = new Node( newID, type, name_ );
+    node.setController( this );
+    nodes.put( newID, node );
+    
+    return node;
 
   }
 
 
-  void dumpRoutings() {
-    for (int key_ : routings.keySet()) {
-      println( "key " + key_ );
-    }
-
-    for ( Routing value_ : routings.values()) {
-      println( "routed to " + value_.target.id );
-    }
+  void removeNode( int id_ ) {
+    nodes.remove( id_ );    
   }
+
+
 
 
   void trigger( Event event_ ) { 
@@ -152,59 +170,34 @@ class NodeController extends Node {
 
 
 
-  Node createNode( Node node_ ) {
-
-    int newID = nextID();
-    node_.setID( newID );
-    node_.controller = this;
-    nodes.put( newID, node_ );
-    
-    return node_;
-
-  }
-  Node createNode( int id_, String type_ ) {
-
-    String name = type_ + "_" + id_;
-    Node node = new Node( id_, type_, name );
-    node.controller = this;
-    nodes.put( id_, node );
-    
-    return node;
-
-  }
-  Node createNode( String type_ ) {
-
-    int newID = nextID();
-    String name = type_ + "_" + newID;
-    Node node = new Node( newID, type_, name );
-    node.controller = this;
-    nodes.put( newID, node );
-    
-    return node;
-
-  }
-  Node createNode( String type_, String name_ ) {
-
-    int newID = nextID();
-    Node node = new Node( newID, type_, name_ );
-    node.controller = this;
-    nodes.put( newID, node );
-    
-    return node;
-
-  }
-
-  void removeNode( int id_ ) {
-    nodes.remove( id_ );    
-  }
-
-
-
-
   // parameters: 
 
   void setNode( int id_, Parameter parameter_ ) {
     println( "IMPLEMENT CTL -> ADDPARAMETER" );
+  }
+
+  Routing connect( Node source_, Node target_ ) {
+
+    int id = nextID();
+    Routing routing = new Routing( id );
+    routing.setType( source_.type + "-" + target_.type );
+    routing.setSource( source_ );
+    routing.setTarget( target_ );
+
+    routings.put( source_.id, routing );
+
+    return routing;
+
+  }
+  
+  void dumpRoutings() {
+    for (int key_ : routings.keySet()) {
+      println( "key " + key_ );
+    }
+
+    for ( Routing value_ : routings.values()) {
+      println( "routed to " + value_.target.id );
+    }
   }
   
 

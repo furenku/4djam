@@ -5,19 +5,24 @@
 ~audioBusses.collect({|i| if(i!=nil) { i.postln; }; });
 ~synths.collect({|i| if(i!=nil) { i.postln; }; });
 
-~newSynth.(0,"testGen");
-~newOutput.(0);
-~newOutput.(1);
 ~outputs[0][0]
 
 
-~synths[0].set(\outBus, ~outputs[0][0] );
+~newSynth.(1,"output");
+~newSynth.(0,"testGen");
+
+~synths[0].set(\outBus, b );
+~synths[1].set(\inBus, b );
+~synths[1].set(\outBus, 0 );
+
+~setSynth.(1,"Float","freq","0.5")
+
 ~synths[0].set(\freq, 2 );
 ~synths[0].set(\rfreq, 200 );
 
 ~synths[1].set(\outBus, ~outputs[0][0] )
 ~synths[2].set(\outBus, ~outputs[1][0] )
-~synths[2].set(\freq, 2 )
+~synths[2].set(\freq, 1/2 )
 
 b = Bus.audio(s,1);
 c = Bus.audio(s,1);
