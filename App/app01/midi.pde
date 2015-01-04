@@ -21,12 +21,12 @@ class NoteSource extends Node {
     else
       onOff = "note_off";
 
-    parameters.addParameter( new Parameter("name", onOff ) );  
-    parameters.addParameter( new Parameter("channel", channel_ ) );
-    parameters.addParameter( new Parameter("pitch", pitch_ ) );
-    parameters.addParameter( new Parameter("velocity", velocity_ ) );
+    set( "name", onOff );  
+    set( "channel", channel_ );
+    set( "pitch", pitch_ );
+    set( "velocity", velocity_ );
 
-    super.send( parameters );
+    super.send( this );
 
   }
 
@@ -40,11 +40,11 @@ class CCSource extends Node {
   
   void send( int channel_, int number_, int value_ ) {
 
-    parameters.addParameter( new Parameter("channel", channel_ ) );
-    parameters.addParameter( new Parameter("number", number_ ) );  
-    parameters.addParameter( new Parameter("value", value_ ) );
+    set( "channel", channel_ );
+    set( "number", number_ );  
+    set( "value", value_ );
 
-    super.send( parameters );
+    super.send( this );
 
   }
 }

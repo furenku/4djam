@@ -5,10 +5,12 @@ void setupKeyboard() {
 	keyboard = new KeyboardController();  
 }
 
+
 class KeyboardController {
 
-  void trigger( char _key ) {
-    println( _key );
-  }
+	void trigger( char _key ) {
+		println( _key );
+	}
   
+
 };

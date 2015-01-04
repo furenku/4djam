@@ -25,21 +25,21 @@ class OscSender {
 
 
 
-	void createNode( String address_, int id_, String type_ ) {
-		OscMessage oscMsg = createMessage( "/" + address_ );
+	void createNode( int id_, String type_ ) {
+		OscMessage oscMsg = createMessage( "/create_" + type_ );
 		oscMsg.add( id_ );
 		oscMsg.add( type_ );
 		send( oscMsg );
 	}
-	void createNode( String address_, int id_, String type_, String name_ ) {
-		OscMessage oscMsg = createMessage( "/" + address_ );
+	void createNode( int id_, String type_, String name_ ) {
+		OscMessage oscMsg = createMessage( "/create_" + type_ );
 		oscMsg.add( id_ );
 		oscMsg.add( type_ );
 		oscMsg.add( name_ );
 		send( oscMsg );
 	}
-	void createNode( String address_, int id_, String type_, String name_, String [] parameters_ ) {
-		OscMessage oscMsg = createMessage( "/" + address_ );
+	void createNode( int id_, String type_, String name_, String [] parameters_ ) {
+		OscMessage oscMsg = createMessage( "/create_" + type_ );
 		oscMsg.add( id_ );
 		oscMsg.add( type_ );
 		oscMsg.add( name_ );
@@ -59,4 +59,23 @@ class OscSender {
 
 
 
+/*
+	void setSynth( Node node_ ) {
+	}
+*/
+	void setNode( int id_, Parameter parameter_ ) {		
+		OscMessage oscMsg = createMessage( "/set_node" );
+		oscMsg.add( id_ );
+		oscMsg.add( parameter_.type );
+		oscMsg.add( parameter_.name );
+		oscMsg.add( parameter_.value );
+		send( oscMsg );	
+	}
+	void setNode( int id_, Parameters parameters_ ) {		
+		OscMessage oscMsg = createMessage( "/set_node" );
+		oscMsg.add( id_ );
+		oscMsg.add( parameters_.getParameterArray() );
+		send( oscMsg );	
+	}
+	
 }

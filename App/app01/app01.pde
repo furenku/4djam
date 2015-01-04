@@ -26,4 +26,3 @@ background(255);
 void draw() {
 
 }
-

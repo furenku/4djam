@@ -8,7 +8,7 @@ class Event {
   Parameters parameters;
 
   void addParameter( Parameter parameter_ ) {
-    parameters.addParameter( parameter_ );
+    parameters.set( parameter_ );
   }
 
 

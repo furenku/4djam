@@ -1,4 +1,5 @@
-/*class MonoSynth extends EventTarget {
+
+/*class MonoSynth extends Node {
 	MonoSynth( int id_ ) {
 		super( id_ );
 		synth = new Synth("monoSynth");
@@ -37,7 +38,7 @@
 
 
 
-class PolySynth extends EventTarget {
+class PolySynth extends Node {
 	PolySynth( int id_ ) {
 		super( id_ );
 		synth = new Synth("polySynth");

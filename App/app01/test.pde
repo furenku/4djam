@@ -20,13 +20,13 @@ void test() {
 
 
 
-	Parameters parameters = new Parameters();
+	Parameters parameters = new Parameters(0);
 
 	Parameter parameter = new Parameter("testkey","testval");
 
-	parameters.addParameter( parameter );
+	parameters.set( parameter );
 	
-	ArrayList<String> pa = parameters.getParameterArray();
+	String [] pa = parameters.getParameterArray();
 
 	for( String st : pa ) {
 		println("STRING: "+ st );
@@ -41,6 +41,7 @@ void test() {
 	testAudioNodes();
 }
 
+Node synth1, synth2;
 
 void testAudioNodes() {
 
@@ -48,13 +49,26 @@ void testAudioNodes() {
 
 
 	audio.setSender( osc );
-	Node bus = audio.busses.createNode( "audioBus", "bus_1" );
-	Node synth = audio.synths.createNode( "audioBus", "bus_1" );
-	Node control = audio.controls.createNode( "audioBus", "bus_1" );
+	Node bus1 = audio.busses.createBus();
+	Node bus2 = audio.busses.createBus();
 	
-	println( "created bus : " + bus.id );
-	println( "created synth : " + synth.id );
-	println( "created control : " + control.id );
+	audio.createOutput(0);
+	audio.createOutput(1);
+	
+	synth1 = audio.synths.createSynth("testGen");
+	synth2 = audio.synths.createSynth("testGen");
+	
+
+	synth1.set( "freq", 3 );
+
+	//Node control = audio.controls.createNode( "audioBus", "bus_1" );
+	
+
+	// synth.addParameter("testKey","testVal");
+
+	//println( "created control : " + control.id );
+
+
 /*
 	audio.route("/nodeOut", bus.id, gen.id );
 	audio.route("/nodeIn", bus.id, out.id );
@@ -64,8 +78,9 @@ void testAudioNodes() {
 
 
 void mousePressed() {
+	synth1.set( "freq", 3 );
 
-	testSendNoteOn(); 
+	//testSendNoteOn(); 
 }
 void mouseReleased() {
 
