@@ -46,6 +46,14 @@ class Parameters extends BaseClass {
     super( id_, type_, name_ );
     parameters = new HashMap<String,Parameter>();
   }
+  Parameters( int id_, String type_, String name_, Parameter parameter_ ) {
+    super( id_, type_, name_ );
+    set( parameter_ );
+  }
+  Parameters( int id_, String type_, String name_, Parameters parameters_ ) {
+    super( id_, type_, name_ );
+    parameters = parameters_.parameters;
+  }
 
   HashMap<String,Parameter> parameters;
 

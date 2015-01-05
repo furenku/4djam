@@ -39,6 +39,7 @@ class OscSender {
 		send( oscMsg );
 	}
 	void createNode( int id_, String type_, String name_, String [] parameters_ ) {
+		println( "Send Parameters" );
 		OscMessage oscMsg = createMessage( "/create_" + type_ );
 		oscMsg.add( id_ );
 		oscMsg.add( type_ );

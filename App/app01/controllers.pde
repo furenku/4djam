@@ -60,7 +60,21 @@ class SynthController extends OscController {
 		oscSender.createNode( node.id, node.type, node.name );
 		return node;
 	}
-
+	Node createSynth( String name_, Parameter parameter_ ) {
+	    Node node = createNode( name_, parameter_ );
+	    oscSender.createNode( node.id, node.type, node.name, node.getParameterArray() );   
+	    return node;
+    }
+	Node createSynth( String name_, String parameterName_, String parameterValue_ ) {
+	    Node node = createNode( name_, parameterName_, parameterValue_ );
+    	String [] sts = node.getParameterArray();
+	    println( sts.length );
+	    for( String p : sts ) {
+	    	println( p );
+	    }
+	    oscSender.createNode( node.id, node.type, node.name, node.getParameterArray() );   
+	    return node;
+    }
 	void trigger ( Event event_ ) {
 		int id = event_.sourceID;
 		Parameters p = event_.parameters;
@@ -94,61 +108,6 @@ class OutputController extends SynthController {
 		Node node = createNode( channel_ );
 		oscSender.createNode( channel_, node.type, node.name );
 		return node;
-	}
-
-}
-
-
-
-
-
-class AudioController extends OscController {
-
-	AudioController	( int id_ ) {
-		super( id_ );
-		setType("audio");
-		outputs = new OutputController( id_ );
-		synths = new SynthController( id_ );
-		busses = new BusController( id_ );
-		// controls = new ControlController( id_ );
-
-		synths.setSender( oscSender );
-	}
-
-	OutputController outputs;
-	SynthController synths;
-	BusController busses;
-	// ControlController controls;
-
-
-	Node createOutput( int channel_ ) {
-		busses.createBus( channel_ );
-		Node output = outputs.createOutput( channel_ );
-		output.set( "outBus", channel_ );
-		return output;
-	}
-
-	void setSender( OscSender oscSender_ ) {
-		super.setSender( oscSender_ );
-		outputs.setSender( oscSender_ );
-		synths.setSender( oscSender_ );
-		busses.setSender( oscSender_ );
-	}
-
-	
-
-	Routing connect( Node source_, Node target_ ) {
-		Routing routing = super.connect( source_, target_ );
-		if ( routing.type.equals( "synth-output" ) ) {
-			println( routing.type );
-			oscSender.connect( routing.source.id, routing.target.id );
-		}
-		if ( routing.type.equals( "noteSource-synth" ) ) {
-			println( routing.type );
-			source_.setController( synths );
-		}
-		return routing;
-
 	}
 
 }

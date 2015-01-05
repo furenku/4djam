@@ -22,12 +22,13 @@ void testAudioNodes() {
 	Node output2 = audio.createOutput(1);
 	
 	synth1 = audio.synths.createSynth("testGen");
-	synth2 = audio.synths.createSynth("testGen");
+	synth2 = audio.synths.createSynth("testGen","freq","10");
 	
 
 	synth1.set( "freq", 3 );
 
 	audio.connect( synth1, output1 );
+	audio.connect( synth2, output2 );
 
 
 	audio.connect( noteSource, synth1 );

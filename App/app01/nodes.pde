@@ -6,7 +6,10 @@ class Node extends Parameters  {
   Node( int id_, String type_, String name_ ) {
     super( id_, type_, name_ );    
   }
-  
+  Node( int id_, String type_, String name_, Parameters parameters_ ) {
+    super( id_, type_, name_, parameters_ );    
+  }
+
   NodeController controller;
   
   void setController( NodeController controller_ ) {
@@ -150,6 +153,67 @@ class NodeController extends Node {
     return node;
 
   }
+
+  Node createNode( Parameter parameter_ ) {
+
+    int newID = nextID();
+    String name = type + "_" + newID;
+    Node node = new Node( newID, type, name );
+    node.setController( this );
+    node.set( parameter_ );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+  Node createNode( Parameters parameters_ ) {
+
+    int newID = nextID();
+    String name = type + "_" + newID;
+    Node node = new Node( newID, type, name, parameters_ );
+    node.setController( this );
+    
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+  Node createNode( String name_, Parameter parameter_ ) {
+
+    int newID = nextID();
+    String name = name_;
+    Node node = new Node( newID, type, name );
+    node.setController( this );
+    node.set( parameter_ );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+  Node createNode( String name_, String parameterName_, String parameterValue_ ) {
+
+    int newID = nextID();
+    String name = name_;
+
+    Node node = new Node( newID, type, name );
+    node.setController( this );
+    node.set( parameterName_, parameterValue_ );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+  Node createNode( String name_, Parameters parameters_ ) {
+
+    int newID = nextID();
+    Node node = new Node( newID, type, name, parameters_ );
+    node.setController( this );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
+
 
 
   void removeNode( int id_ ) {

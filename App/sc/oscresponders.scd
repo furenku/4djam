@@ -83,7 +83,29 @@ o.add( OSCresponder(nil, '/create_synth', {arg time, responder, msg, addr;
 	var index = msg[1];
 	var type = msg[2];
 	var name = msg[3];
-	~newSynth.( index, name );
+	var offset = 4;
+	var parameters;
+
+	if( msg.size() > offset ) {
+		var index = offset;
+		var parameterIndex = 0;
+		var parameterPart;
+		parameters = Array.newClear( msg.size() - 4 );
+		while( { index < msg.size() }, {
+
+			if( parameterIndex % 2 == 0 ) {
+				parameterPart = msg[ index ].asSymbol;
+			} {
+				parameterPart = msg[ index ].asFloat;
+			};
+
+			parameters[ parameterIndex ] = parameterPart;
+			index = index + 1;
+			parameterIndex = parameterIndex + 1;
+		});
+
+	};
+	~newSynth.( index, name, parameters );
 }).add );
 o.add( OSCresponder(nil, '/create_outBus', {arg time, responder, msg, addr;
 	var index = msg[1];
