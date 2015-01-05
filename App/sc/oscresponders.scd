@@ -4,8 +4,7 @@
 
 ~num_o = 30;
 ~num_b = 30;
-~numAudioNodes = 100;
-~numControlNodes = 100;
+~numAudioNodes = 200;
 ~numOutputs = 2;
 
 o = Array(~num_o);
@@ -14,10 +13,6 @@ o = Array(~num_o);
 ~synths = Array.newClear( ~numAudioNodes );
 ~audioRoutes = Dictionary.new();
 ~outputs = Array.newClear( ~numOutputs );
-~controlBusses = Array.newClear( ~num_b );
-~controlNodes = Array.newClear( ~numControlNodes );
-~controlOutputs = Array.newClear( ~numOutputs );
-~controlRoutes = Dictionary.new();
 
 
 // funciones:
@@ -141,7 +136,13 @@ o.add( OSCresponder(nil, '/set_node', {arg time, responder, msg, addr;
 }).add );
 
 
-o.add( OSCresponder(nil, '/freeAll', {arg time, responder, msg, addr;
+o.add( OSCresponder(nil, '/free_node', {arg time, responder, msg, addr;
+	var index = msg[1];
+	("free: "++ index).postln;
+	~synths[ index ].free;
+}).add );
+
+o.add( OSCresponder(nil, '/free_all', {arg time, responder, msg, addr;
 	~synths.collect({|z| if(z!=nil) { z.free; }; });
 }).add );
 

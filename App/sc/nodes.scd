@@ -3,7 +3,7 @@
 ~newBus.( 'audioBus', 0, 1 );
 
 ~audioBusses.collect({|i| if(i!=nil) { i.postln; }; });
-~synths.collect({|i| if(i!=nil) { i.postln; }; });
+~synths.collect,({|i| if(i!=nil) { i.postln; }; });
 
 ~outputs[0][0]
 
@@ -55,9 +55,15 @@ SynthDef(\testNote,{ | outBus=99, freq = 300, t_trig = 0 |
 	Out.ar( outBus, sig );
 }).store;
 
-SynthDef(\polyNote,{ | outBus=99, note = 72, velocity = 127, t_trig = 1 |
+SynthDef(\polyNoteEnv,{ | outBus=99, pitch = 72, velocity = 127, t_trig = 1 |
 	var amp = velocity / 127;
-	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig, doneAction: 2), note.midicps, 0.1 );
+	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig, doneAction: 2), pitch.midicps, 0.1 );
+	Out.ar( outBus, sig * amp );
+}).store;
+
+SynthDef(\polyNote,{ | outBus=99, pitch = 72, velocity = 0, t_trig = 0 |
+	var amp = velocity / 127;
+	var sig = RLPF.ar( WhiteNoise.ar(), pitch.midicps, 0.1 );
 	Out.ar( outBus, sig * amp );
 }).store;
 

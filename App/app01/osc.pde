@@ -88,9 +88,14 @@ class OscSender {
 	}
 
 
+	void freeNode( int id_ ){
+		OscMessage oscMsg = createMessage( "/free_node" );
+		oscMsg.add( id_ );
+		send( oscMsg );	
+	}
 	void freeAll() {
-		OscMessage oscMsg = createMessage( "/freeAll" );
-		send( oscMsg );
+		OscMessage oscMsg = createMessage( "/free_all" );
+		send( oscMsg );	
 	}
 	
 }

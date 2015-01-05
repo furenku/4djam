@@ -97,8 +97,11 @@ class SynthController extends OscController {
 		int id = event_.sourceID;
 		String name = event_.getName();
 		println( "trigger " + name );
-		if ( name == "note_on" || name == "note_off" ) {
+		if ( name.equals("note_on") ) {
 			polyNoteOn( event_ );
+		}
+		if ( name.equals("note_off") ) {
+			polyNoteOff( event_ );
 		}
 
 	}
@@ -118,15 +121,12 @@ class SynthController extends OscController {
 		int pitch = event_.get("pitch", 0 );
 		int velocity = event_.get("velocity", 0 );
 
-		println( "e.source: " + event_.getSourceID() + " params: ");
-		for( String p : event_.getParameterArray() ) {
-			println( p );
-		}
 
 		Parameters p  = new Parameters();
 
 		p.set( "pitch", pitch );
 		p.set( "velocity", velocity );
+		p.set( "t_trig", 1 );
 		p.set( "outBus", 0 );
 
 		// nodes.get( event_.getSourceID() ).set( p ); 
@@ -137,12 +137,25 @@ class SynthController extends OscController {
 	    Node synth = channels.get( channel );
 	    synth.initController( type );
 	    
-	    Node noteNode = synth.nodeController.createNode( "polyNote", p );
-	    oscSender.createNode( noteNode.id, noteNode.type, noteNode.name, noteNode.getParameterArray() );
+	    Node noteNode = synth.nodeController.createNode( pitch, "polyNote", p );
+	    oscSender.createNode( pitch, noteNode.type, noteNode.name, noteNode.getParameterArray() );
 
 	}
 
+	void polyNoteOff( Event event_ ) {
 
+		int channel = event_.get("channel", 0 );
+		int pitch = event_.get("pitch", 0 );
+		int velocity = event_.get("velocity", 0 );
+
+	    println("note_off");
+	    println( channel, pitch, velocity );
+	    
+	    // Node synth = channels.get( channel );
+	    // synth.nodeController.removeNode( pitch );
+	    oscSender.freeNode( pitch );
+
+	}
 
 	// parameters: 
 
