@@ -1,31 +1,23 @@
-class Event {
+class Event extends Parameters {
 
   Event() {
-
+    super();
   }
 
   int sourceID;
-  Parameters parameters;
-
-  void addParameter( Parameter parameter_ ) {
-    parameters.set( parameter_ );
-  }
-
-
+  
   void setSourceID( int id_ ) {
     sourceID = id_;
   }
-
-  void setParameters( Parameters parameters_ ) {
-    parameters = parameters_;
+  int getSourceID() {
+    return sourceID;
   }
-
   String eventStr() {
     String _str;
     _str = "";
     
 
-    for ( Parameter p  : parameters.parameters.values() ) {
+    for ( Parameter p  : parameters.values() ) {
       _str += p.name + ": " + p.value + "\n";      
     }
     

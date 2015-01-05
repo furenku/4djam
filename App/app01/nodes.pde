@@ -1,16 +1,39 @@
 
 class Node extends Parameters  {  
   Node( int id_ ) {
-    super( id_ );
+    super( id_ );   
+    controllerInitialized = false; 
   }
   Node( int id_, String type_, String name_ ) {
     super( id_, type_, name_ );    
+    controllerInitialized = false; 
   }
   Node( int id_, String type_, String name_, Parameters parameters_ ) {
     super( id_, type_, name_, parameters_ );    
+    controllerInitialized = false; 
+  }
+  Node( int id_, String type_, String name_, String parameterName_, String parameterValue_ ) {
+    super( id_, type_, name_, parameterName_, parameterValue_ );
+    controllerInitialized = false; 
+  }
+  
+  NodeController controller, nodeController;
+  boolean  controllerInitialized;
+
+  void initController() {
+    if( ! controllerInitialized ) {
+      nodeController = new NodeController( id );
+    }
+    controllerInitialized = true; 
   }
 
-  NodeController controller;
+  void initController( String type_ ) {
+    if( ! controllerInitialized ) {
+      nodeController = new NodeController( id );
+      nodeController.setType( type_ );
+    }
+    controllerInitialized = true; 
+  }
   
   void setController( NodeController controller_ ) {
     controller = controller_;
@@ -22,7 +45,8 @@ class Node extends Parameters  {
     Event event;
     event = new Event();
     event.sourceID = id;
-    event.setParameters( parameters_ );    
+    event.setName( parameters_.get("name") );
+    event.set( parameters_ );    
     return event;    
   }
 
@@ -31,10 +55,11 @@ class Node extends Parameters  {
   }
   
   void trigger ( Event event_ ) {
-    println();
-    println( "IMPLEMENT TRIGGER" );
-    println("Source ID: " + event_.sourceID + ", triggers target: " + id );
-    println( event_.eventStr() );
+    // println();
+    // println( "IMPLEMENT TRIGGER" );
+    // println("Source ID: " + event_.sourceID + ", triggers target: " + id );
+    // println( event_.eventStr() );
+    controller.trigger( event_ );
 
   }
 
@@ -153,7 +178,15 @@ class NodeController extends Node {
     return node;
 
   }
+  Node createNode( int id_, String name_ ) {
 
+    Node node = new Node( id_, type, name_ );
+    node.setController( this );
+    nodes.put( id_, node );
+    
+    return node;
+
+  }
   Node createNode( Parameter parameter_ ) {
 
     int newID = nextID();
@@ -190,6 +223,16 @@ class NodeController extends Node {
     return node;
 
   }
+  Node createNode( String name_, Parameters parameters_ ) {
+
+    int newID = nextID();
+    Node node = new Node( newID, type, name_, parameters_ );
+    node.setController( this );
+    nodes.put( newID, node );
+    
+    return node;
+
+  }
   Node createNode( String name_, String parameterName_, String parameterValue_ ) {
 
     int newID = nextID();
@@ -203,16 +246,27 @@ class NodeController extends Node {
     return node;
 
   }
-  Node createNode( String name_, Parameters parameters_ ) {
 
-    int newID = nextID();
-    Node node = new Node( newID, type, name_, parameters_ );
+
+  Node createNode( int id_, String name_, String parameterName_, String parameterValue_ ) {
+
+    Node node = new Node( id_, type, name_, parameterName_, parameterValue_ );
     node.setController( this );
-    nodes.put( newID, node );
+    nodes.put( id_, node );
+
+    return node;
+
+  }
+  Node createNode( int id_, String name_, Parameters parameters_ ) {
+
+    Node node = new Node( id_, type, name_, parameters_ );
+    node.setController( this );
+    nodes.put( id_, node );
     
     return node;
 
   }
+  
 
 
 

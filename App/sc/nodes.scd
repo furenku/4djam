@@ -50,7 +50,20 @@ SynthDef(\output,{ | inBus=98, outBus=99|
 }).store;
 
 
-SynthDef(\testNote,{ | outBus=99, freq = 0.5, rfreq = 300, t_trig = 0 |
-	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig), rfreq, 0.1 );
+SynthDef(\testNote,{ | outBus=99, freq = 300, t_trig = 0 |
+	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig), freq, 0.1 );
 	Out.ar( outBus, sig );
 }).store;
+
+SynthDef(\polyNote,{ | outBus=99, note = 72, velocity = 127, t_trig = 1 |
+	var amp = velocity / 127;
+	var sig = RLPF.ar( WhiteNoise.ar() * EnvGen.kr(Env.perc, t_trig, doneAction: 2), note.midicps, 0.1 );
+	Out.ar( outBus, sig * amp );
+}).store;
+
+
+n = Synth(\testNote)
+
+n.set(\outBus, 0)
+n.set(\t_trig,1)
+n.set(\freq,140)

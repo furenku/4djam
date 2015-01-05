@@ -22,7 +22,8 @@ class NoteSource extends Node {
       onOff = "note_on";
     else
       onOff = "note_off";
-
+    //println( onOff +" "+ channel_ +" "+ pitch_ +" "+ velocity_);
+    
     set( "name", onOff );  
     set( "channel", channel_ );
     set( "pitch", pitch_ );

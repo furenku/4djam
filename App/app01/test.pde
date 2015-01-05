@@ -4,14 +4,16 @@ OscSender osc = new OscSender();
 void test() {
 
 	testAudioNodes();
+	testPolyMode();
 
 }
 
+AudioController audio = new AudioController(0);
 Node synth1, synth2;
+Node polySynth, monoSynth;
 
 void testAudioNodes() {
 
-	AudioController audio = new AudioController(0);
 
 
 	audio.setSender( osc );
@@ -21,19 +23,22 @@ void testAudioNodes() {
 	Node output1 = audio.createOutput(0);
 	Node output2 = audio.createOutput(1);
 	
-	synth1 = audio.synths.createSynth("testGen","freq","2");
+	// synth1 = audio.synths.createSynth("testGen","freq","2");
 	
-	Parameters p = new Parameters();
-	p.set("freq","10");
-	p.set("rfreq","1000");
-	synth2 = audio.synths.createSynth("testGen", p);
+	// Parameters p = new Parameters();
+	// p.set("freq","10");
+	// p.set("rfreq","1000");
+	// synth2 = audio.synths.createSynth("testGen", p);
 	
 
-	audio.connect( synth1, output1 );
-	audio.connect( synth2, output2 );
+	// audio.connect( synth1, output1 );
+	// audio.connect( synth2, output2 );
 
 
-	audio.connect( noteSource, synth1 );
+	polySynth = audio.synths.createSynth("polyNote");
+	audio.connect( polySynth, output1 );
+	audio.connect( noteSource, polySynth );
+	audio.synths.assignChannel( 0, polySynth );
 	// Node control = audio.controls.createNode( "audioBus", "bus_1" );
 	
 
@@ -49,7 +54,11 @@ void testAudioNodes() {
 }
 
 
+void testPolyMode() {
+	
+	
 
+}
 void mousePressed() {
 	synth1.set( "freq", 3 );
 

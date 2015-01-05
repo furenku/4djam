@@ -57,7 +57,12 @@ class Parameters extends BaseClass {
     super( id_, type_, name_ );
     parameters = parameters_.parameters;
   }
-
+  Parameters( int id_, String type_, String name_, String parameterName_, String parameterValue_ ) {
+    super( id_, type_, name_ );
+    parameters = new HashMap<String,Parameter> ();
+    set( parameterName_, parameterValue_ );
+  }
+  
   HashMap<String,Parameter> parameters;
 
   Parameter set( Parameter parameter_ ) {
@@ -80,6 +85,10 @@ class Parameters extends BaseClass {
     Parameter parameter = new Parameter( name_, value_ );
     parameters.put( name_, parameter );
     return parameter;
+  }
+  Parameters set(  Parameters parameters_ ) {
+    parameters = parameters_.parameters;
+    return this;
   }
 
   String get( String name_ ) {

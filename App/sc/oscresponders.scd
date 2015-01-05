@@ -102,6 +102,7 @@ o.add( OSCresponder(nil, '/create_synth', {arg time, responder, msg, addr;
 			parameters[ parameterIndex ] = parameterPart;
 			index = index + 1;
 			parameterIndex = parameterIndex + 1;
+
 		});
 
 	};
