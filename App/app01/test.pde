@@ -21,11 +21,13 @@ void testAudioNodes() {
 	Node output1 = audio.createOutput(0);
 	Node output2 = audio.createOutput(1);
 	
-	synth1 = audio.synths.createSynth("testGen");
-	synth2 = audio.synths.createSynth("testGen","freq","10");
+	synth1 = audio.synths.createSynth("testGen","freq","2");
 	
-
-	synth1.set( "freq", 3 );
+	Parameters p = new Parameters();
+	p.set("freq","10");
+	p.set("rfreq","1000");
+	synth2 = audio.synths.createSynth("testGen", p);
+	
 
 	audio.connect( synth1, output1 );
 	audio.connect( synth2, output2 );
@@ -54,7 +56,7 @@ void mousePressed() {
 	//testSendNoteOn(); 
 }
 void mouseReleased() {
-
+	synth1.set( "freq", 2 );
 	testSendNoteOn(); 
 }
 void testSendNoteOn() {

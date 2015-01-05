@@ -37,7 +37,10 @@ class Parameter extends BaseClass {
 
 
 class Parameters extends BaseClass {
-
+  Parameters() {  
+    super( 0 );
+    parameters = new HashMap<String,Parameter> ();
+  }
   Parameters( int id_ ) {  
     super( id_ );
     parameters = new HashMap<String,Parameter> ();

@@ -68,11 +68,12 @@ class SynthController extends OscController {
 	Node createSynth( String name_, String parameterName_, String parameterValue_ ) {
 	    Node node = createNode( name_, parameterName_, parameterValue_ );
     	String [] sts = node.getParameterArray();
-	    println( sts.length );
-	    for( String p : sts ) {
-	    	println( p );
-	    }
 	    oscSender.createNode( node.id, node.type, node.name, node.getParameterArray() );   
+	    return node;
+    }
+    Node createSynth( String name_, Parameters parameters_ ) {
+	    Node node = createNode( name_, parameters_ );
+    	oscSender.createNode( node.id, node.type, node.name, parameters_.getParameterArray() );   
 	    return node;
     }
 	void trigger ( Event event_ ) {

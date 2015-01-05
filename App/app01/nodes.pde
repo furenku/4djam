@@ -206,7 +206,7 @@ class NodeController extends Node {
   Node createNode( String name_, Parameters parameters_ ) {
 
     int newID = nextID();
-    Node node = new Node( newID, type, name, parameters_ );
+    Node node = new Node( newID, type, name_, parameters_ );
     node.setController( this );
     nodes.put( newID, node );
     
